@@ -58,14 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncPump.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Engine\CameraFeeder.cs" />
+    <Compile Include="Services\IApp.cs" />
+    <Compile Include="Utils\AsyncApplication.cs" />
+    <Compile Include="Utils\SingleThreadSynchronizationContext.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="Utils\ConsoleLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
