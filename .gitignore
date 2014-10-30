@@ -1,0 +1,12 @@
+obj
+bin
+*.user
+*.userprefs
+_ReSharper.*
+*.opensdf
+*.sdf
+*.suo
+Debug
+Release
+/packages/
+/ipch/
