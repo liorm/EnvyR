@@ -58,7 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\CameraFeeder.cs" />
+    <Compile Include="Engine\Access\HttpAccess.cs" />
+    <Compile Include="Engine\Interfaces\ISource.cs" />
     <Compile Include="Services\IApp.cs" />
     <Compile Include="Utils\AsyncApplication.cs" />
     <Compile Include="Utils\SingleThreadSynchronizationContext.cs" />
