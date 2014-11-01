@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Security.Policy;
 using System.Threading.Tasks;
+using EnvyR.FFmpeg;
 using EnvyR.Server.Engine.Interfaces;
 using EnvyR.Server.Services;
 using Splat;
@@ -33,14 +34,7 @@ namespace EnvyR.Server.Engine.Access
                 throw new InvalidOperationException("Already started");
             m_started = true;
 
-            HttpWebRequest request = HttpWebRequest.CreateHttp(m_sourceUri);
-
-            // Wait for a response to arrive.
-            var response = await request.GetResponseAsync();
-            using (response.GetResponseStream())
-            {
-                
-            }
+            var b = new InputFile(@"C:\Users\Lior\Videos\The Simpsons Movie - Trailer.mp4");
         }
     }
 }
