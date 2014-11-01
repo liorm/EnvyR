@@ -4,10 +4,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EnvyR.FFmpeg.Exceptions;
+using EnvyR.FFmpeg.Managed;
 using EnvyR.FFmpeg.Stream;
 using FFmpeg.AutoGen;
 using System.IO;
 using System.Collections.ObjectModel;
+using AVPacket = EnvyR.FFmpeg.Managed.AVPacket;
+using AVStream = EnvyR.FFmpeg.Managed.AVStream;
 
 namespace EnvyR.FFmpeg
 {
@@ -65,17 +68,17 @@ namespace EnvyR.FFmpeg
 
                 for (int i = 0; i < ctx->nb_streams; i++)
                 {
-                    AVStream stream = *ctx->streams[i];
+                    var stream = ctx->streams[i];
 
-                    switch (stream.codec->codec_type)
+                    switch (stream->codec->codec_type)
                     {
                         case AVMediaType.AVMEDIA_TYPE_VIDEO:
                             // TODO: Implement specific stream
-                            m_streams.Add(i, new CodecStream());
+                            m_streams.Add(i, new CodecStream(stream));
                             break;
                         case AVMediaType.AVMEDIA_TYPE_AUDIO:
                             // TODO: Implement specific stream
-                            m_streams.Add(i, new CodecStream());
+                            m_streams.Add(i, new CodecStream(stream));
                             break;
                         default:
                             m_streams.Add(i, null);
@@ -166,15 +169,20 @@ namespace EnvyR.FFmpeg
         {
             unsafe
             {
-                ManagedAVPacket packet = new ManagedAVPacket();
+                var packet = new AVPacket();
 
-                fixed (AVPacket* p = &packet.Packet)
+                fixed (global::FFmpeg.AutoGen.AVPacket* p = &packet.Packet)
                     if (FFmpegInvoke.av_read_frame((AVFormatContext*)m_ctx.ToPointer(), p) < 0)
                         return false;
 
                 var dest = m_streams[packet.Packet.stream_index];
                 if (dest != null)
+                {
+                    packet.Stream = new AVStream(dest.AVStream);
                     dest.m_subject.OnNext(packet);
+                }
+                else
+                    packet.Dispose();
 
                 return true;
             }

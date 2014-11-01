@@ -36,16 +36,17 @@ namespace EnvyR.Server.Engine.Access
                 throw new InvalidOperationException("Already started");
             m_started = true;
 
-            var b = new InputFile(@"C:\Users\Lior\Videos\The Simpsons Movie - Trailer.mp4");
+            //var b = new InputFile(@"C:\Users\Lior\Videos\The Simpsons Movie - Trailer.mp4");
+            var b = new InputFile(@"http://xperitoseu.blob.core.windows.net/asset-ce753fd0-5983-4d62-ad77-56e0e76180e6/The%20Simpsons%20Movie%20-%20Trailer.mp4?sv=2012-02-12&sr=c&si=d1fc52c2-dc8f-429b-b400-61a86c8091b0&sig=AgMNVkcsctgLxZFao7gLcQiZj4SdJhlb1onXu8AVsyU%3D&st=2014-10-31T14%3A31%3A28Z&se=2016-10-30T14%3A31%3A28Z");
 
             await b.OpenFileAsync();
 
             b.Streams[0].Stream.
-                Delay(TimeSpan.FromSeconds(2)).
+               
                 ObserveOn(SynchronizationContext.Current).
                 Subscribe(( p ) =>
                           {
-                              this.Log().Debug("Packet: {0}", p.Packet.pos);
+                              this.Log().Debug("Packet: {0}", p.Timestamp);
                           });
 
             b.StartRunning();
