@@ -12,11 +12,14 @@ using AVStream = FFmpeg.AutoGen.AVStream;
 
 namespace EnvyR.FFmpeg.Stream
 {
+    /// <summary>
+    /// Base class for a codec.
+    /// </summary>
     public unsafe class CodecStream : IDisposable
     {
         internal CodecStream(AVStream* avStream)
         {
-            AVStream = avStream;
+            m_timebase = avStream->time_base;
             m_subject = new Subject<AVPacket>();
 
             // Stream object should be subscribed only once.
@@ -33,7 +36,14 @@ namespace EnvyR.FFmpeg.Stream
         /// </summary>
         internal readonly Subject<AVPacket> m_subject;
 
-        internal AVStream* AVStream { get; private set; }
+        /// <summary>
+        /// Convert the given timestamp in timebase to TimeSpan
+        /// </summary>
+        internal TimeSpan GetPacketTime(long ts)
+        {
+            return TimeSpan.FromMilliseconds((double)(ts * m_timebase.num * 1000) / m_timebase.den);
+        }
+        private readonly AVRational m_timebase;
 
         #region Implementation of IDisposable
 

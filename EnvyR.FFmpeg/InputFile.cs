@@ -10,12 +10,11 @@ using FFmpeg.AutoGen;
 using System.IO;
 using System.Collections.ObjectModel;
 using AVPacket = EnvyR.FFmpeg.Managed.AVPacket;
-using AVStream = EnvyR.FFmpeg.Managed.AVStream;
 
 namespace EnvyR.FFmpeg
 {
     /// <summary>
-    /// Represents an ffmpeg input file.
+    /// Represents an ffmpeg input stream.
     /// </summary>
     public class InputFile : IDisposable
     {
@@ -29,12 +28,16 @@ namespace EnvyR.FFmpeg
 #endif
         }
 
-        public InputFile(string filename)
+        /// <summary>
+        /// Construct the stream for the given url.
+        /// </summary>
+        /// <param name="uri"></param>
+        public InputFile(string uri)
         {
-            if (String.IsNullOrEmpty(filename))
-                throw new ArgumentNullException("filename");
+            if (String.IsNullOrEmpty(uri))
+                throw new ArgumentNullException("uri");
 
-            Filename = filename;
+            Uri = uri;
         }
 
         /// <summary>
@@ -42,22 +45,23 @@ namespace EnvyR.FFmpeg
         /// </summary>
         public async Task OpenFileAsync()
         {
-            m_ctx = await Task.Run(() =>
-                                   {
-                                       unsafe
-                                       {
-                                           AVFormatContext* ctx;
+            m_ctx = await Task.Run(
+                () =>
+                {
+                    unsafe
+                    {
+                        AVFormatContext* ctx;
 
-                                           // Open the file with FFmpeg
-                                           if ( FFmpegInvoke.avformat_open_input(&ctx, Filename, null, null) != 0 )
-                                               throw new FFmpegException("Couldn't open file");
+                        // Open the file with FFmpeg
+                        if ( FFmpegInvoke.avformat_open_input(&ctx, Uri, null, null) != 0 )
+                            throw new FFmpegException("Couldn't open file");
 
-                                           if ( FFmpegInvoke.avformat_find_stream_info(ctx, null) != 0 )
-                                               throw new FFmpegException("Couldn't find stream info");
+                        if ( FFmpegInvoke.avformat_find_stream_info(ctx, null) != 0 )
+                            throw new FFmpegException("Couldn't find stream info");
 
-                                           return new IntPtr(ctx);
-                                       }
-                                   });
+                        return new IntPtr(ctx);
+                    }
+                });
 
             unsafe
             {
@@ -133,7 +137,7 @@ namespace EnvyR.FFmpeg
         /// <summary>
         /// The input file name.
         /// </summary>
-        public string Filename { get; private set; }
+        public string Uri { get; private set; }
 
         /// <summary>
         /// Duration of the stream
@@ -178,7 +182,7 @@ namespace EnvyR.FFmpeg
                 var dest = m_streams[packet.Packet.stream_index];
                 if (dest != null)
                 {
-                    packet.Stream = new AVStream(dest.AVStream);
+                    packet.Stream = dest;
                     dest.m_subject.OnNext(packet);
                 }
                 else

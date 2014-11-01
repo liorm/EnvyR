@@ -1,4 +1,5 @@
 ﻿using System;
+using EnvyR.FFmpeg.Stream;
 using FFmpegInvoke = FFmpeg.AutoGen.FFmpegInvoke;
 
 namespace EnvyR.FFmpeg.Managed
@@ -17,7 +18,10 @@ namespace EnvyR.FFmpeg.Managed
             }
         }
 
-        internal AVStream Stream;
+        /// <summary>
+        /// The related codec stream.
+        /// </summary>
+        public CodecStream Stream { get; internal set; }
 
         /// <summary>
         /// The wrapped packet.
