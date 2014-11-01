@@ -13,7 +13,7 @@ namespace EnvyR.FFmpeg.Stream
     {
         public CodecStream()
         {
-            m_subject = new Subject<AVPacket>();
+            m_subject = new Subject<ManagedAVPacket>();
 
             // Stream object should be subscribed only once.
             Stream = m_subject.Publish().RefCount();
@@ -22,12 +22,12 @@ namespace EnvyR.FFmpeg.Stream
         /// <summary>
         /// The stream of packets.
         /// </summary>
-        public IObservable<AVPacket> Stream { get; private set; }
+        public IObservable<ManagedAVPacket> Stream { get; private set; }
 
         /// <summary>
         /// Internal producer for the packets.
         /// </summary>
-        internal readonly Subject<AVPacket> m_subject;
+        internal readonly Subject<ManagedAVPacket> m_subject;
 
         #region Implementation of IDisposable
 

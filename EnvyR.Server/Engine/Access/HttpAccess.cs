@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Security.Policy;
+using System.Threading;
 using System.Threading.Tasks;
 using EnvyR.FFmpeg;
 using EnvyR.Server.Engine.Interfaces;
@@ -37,6 +39,18 @@ namespace EnvyR.Server.Engine.Access
             var b = new InputFile(@"C:\Users\Lior\Videos\The Simpsons Movie - Trailer.mp4");
 
             await b.OpenFileAsync();
+
+            b.Streams[0].Stream.
+                Delay(TimeSpan.FromSeconds(2)).
+                ObserveOn(SynchronizationContext.Current).
+                Subscribe(( p ) =>
+                          {
+                              this.Log().Debug("Packet: {0}", p.Packet.pos);
+                          });
+
+            b.StartRunning();
+
+
         }
     }
 }

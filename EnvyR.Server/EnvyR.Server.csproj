@@ -76,6 +76,10 @@
       <Project>{9c2b605e-5f51-4337-813e-f51ef24ea595}</Project>
       <Name>EnvyR.FFmpeg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\External\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
+      <Project>{A536B02A-B0B1-4753-8328-17369EF09976}</Project>
+      <Name>FFmpeg.AutoGen</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

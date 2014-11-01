@@ -56,6 +56,7 @@
     <Compile Include="InputFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stream\CodecStream.cs" />
+    <Compile Include="Stream\ManagedAVPacket.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\External\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">

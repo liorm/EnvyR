@@ -63,7 +63,6 @@ namespace EnvyR.FFmpeg
                 if (ctx->nb_streams < 1)
                     throw new FFmpegException("No streams found");
 
-                m_streams = new SortedList<int, CodecStream>();
                 for (int i = 0; i < ctx->nb_streams; i++)
                 {
                     AVStream stream = *ctx->streams[i];
@@ -99,8 +98,19 @@ namespace EnvyR.FFmpeg
         /// </summary>
         public void StartRunning()
         {
-            if (m_ctx == IntPtr.Zero)
+            if (m_ctx == IntPtr.Zero || m_streams == null)
                 throw new InvalidOperationException("File not open");
+
+            if ( m_readerThread != null )
+                throw new InvalidOperationException("Already running");
+
+            m_readerThread = new Thread(ReaderThreadProc)
+                             {
+                                 IsBackground = true,
+                                 Name = "InputFile Reader"
+                             };
+            m_stopRunning = false;
+            m_readerThread.Start();
         }
 
         public void StopRunning()
@@ -109,6 +119,7 @@ namespace EnvyR.FFmpeg
             {
                 m_stopRunning = true;
                 m_readerThread.Join();
+                m_readerThread = null;
             }
         }
 
@@ -133,7 +144,7 @@ namespace EnvyR.FFmpeg
         {
             get { return new ReadOnlyCollection<CodecStream>(m_streams.Values); }
         }
-        private SortedList<int, CodecStream> m_streams;
+        private readonly SortedList<int, CodecStream> m_streams = new SortedList<int, CodecStream>();
 
         private void ReaderThreadProc()
         {
@@ -155,18 +166,15 @@ namespace EnvyR.FFmpeg
         {
             unsafe
             {
-                AVPacket packet = new AVPacket();
-                FFmpegInvoke.av_init_packet(&packet);
+                ManagedAVPacket packet = new ManagedAVPacket();
 
-                if ( FFmpegInvoke.av_read_frame((AVFormatContext*)m_ctx.ToPointer(), &packet) < 0 )
-                    return false;
+                fixed (AVPacket* p = &packet.Packet)
+                    if (FFmpegInvoke.av_read_frame((AVFormatContext*)m_ctx.ToPointer(), p) < 0)
+                        return false;
 
-                var dest = m_streams[packet.stream_index];
+                var dest = m_streams[packet.Packet.stream_index];
                 if (dest != null)
                     dest.m_subject.OnNext(packet);
-
-                // TODO: Find a way to associate it with the packet itself.
-                FFmpegInvoke.av_free_packet(&packet);
 
                 return true;
             }
@@ -196,9 +204,10 @@ namespace EnvyR.FFmpeg
             if (disposing)
             {
                 StopRunning();
+
                 foreach ( var stream in m_streams )
                     stream.Value.Dispose();
-                m_streams = null;
+                m_streams.Clear();
             }
 
             unsafe
