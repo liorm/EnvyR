@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpeg.AutoGen", "External\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvyR.FFmpeg", "EnvyR.FFmpeg\EnvyR.FFmpeg.csproj", "{9C2B605E-5F51-4337-813E-F51EF24EA595}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvyR.Common", "EnvyR.Common\EnvyR.Common.csproj", "{466187EC-8C51-42BE-873B-48E736597395}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{466187EC-8C51-42BE-873B-48E736597395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{466187EC-8C51-42BE-873B-48E736597395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{466187EC-8C51-42BE-873B-48E736597395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{466187EC-8C51-42BE-873B-48E736597395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

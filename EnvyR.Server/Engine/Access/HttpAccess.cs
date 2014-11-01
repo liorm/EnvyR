@@ -35,6 +35,8 @@ namespace EnvyR.Server.Engine.Access
             m_started = true;
 
             var b = new InputFile(@"C:\Users\Lior\Videos\The Simpsons Movie - Trailer.mp4");
+
+            await b.OpenFileAsync();
         }
     }
 }
