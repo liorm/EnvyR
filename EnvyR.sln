@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0C603942-AFF4-4E40-945B-6C36464C8497}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0C6039
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvyR.Server", "EnvyR.Server\EnvyR.Server.csproj", "{E32B18C0-20C5-4AA0-A3AE-7D2C9C822B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpeg.AutoGen", "External\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj", "{A536B02A-B0B1-4753-8328-17369EF09976}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvyR.FFmpeg", "EnvyR.FFmpeg\EnvyR.FFmpeg.csproj", "{9C2B605E-5F51-4337-813E-F51EF24EA595}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvyR.Common", "EnvyR.Common\EnvyR.Common.csproj", "{466187EC-8C51-42BE-873B-48E736597395}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpeg.AutoGen", "FFmpeg.AutoGen\FFmpeg.AutoGen.csproj", "{A536B02A-B0B1-4753-8328-17369EF09976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,6 @@ Global
 		{E32B18C0-20C5-4AA0-A3AE-7D2C9C822B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E32B18C0-20C5-4AA0-A3AE-7D2C9C822B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E32B18C0-20C5-4AA0-A3AE-7D2C9C822B36}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A536B02A-B0B1-4753-8328-17369EF09976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A536B02A-B0B1-4753-8328-17369EF09976}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A536B02A-B0B1-4753-8328-17369EF09976}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A536B02A-B0B1-4753-8328-17369EF09976}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C2B605E-5F51-4337-813E-F51EF24EA595}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,6 +36,10 @@ Global
 		{466187EC-8C51-42BE-873B-48E736597395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{466187EC-8C51-42BE-873B-48E736597395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{466187EC-8C51-42BE-873B-48E736597395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A536B02A-B0B1-4753-8328-17369EF09976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A536B02A-B0B1-4753-8328-17369EF09976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A536B02A-B0B1-4753-8328-17369EF09976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A536B02A-B0B1-4753-8328-17369EF09976}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

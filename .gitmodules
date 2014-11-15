@@ -1,3 +1,0 @@
-[submodule "External/FFmpeg.AutoGen"]
-	path = External/FFmpeg.AutoGen
-	url = https://github.com/liorm/FFmpeg.AutoGen.git
