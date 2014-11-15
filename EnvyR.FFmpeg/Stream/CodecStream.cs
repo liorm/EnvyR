@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using EnvyR.Common.Interfaces;
 using EnvyR.FFmpeg.Managed;
 using FFmpeg.AutoGen;
 using AVPacket = EnvyR.FFmpeg.Managed.AVPacket;
@@ -29,7 +30,7 @@ namespace EnvyR.FFmpeg.Stream
         /// <summary>
         /// The stream of packets.
         /// </summary>
-        public IObservable<AVPacket> Stream { get; private set; }
+        public IObservable<IPacket> Stream { get; private set; }
 
         /// <summary>
         /// Internal producer for the packets.

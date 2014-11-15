@@ -1,4 +1,5 @@
 ﻿using System;
+using EnvyR.Common.Interfaces;
 using EnvyR.FFmpeg.Stream;
 using FFmpegInvoke = FFmpeg.AutoGen.FFmpegInvoke;
 
@@ -7,7 +8,7 @@ namespace EnvyR.FFmpeg.Managed
     /// <summary>
     /// Managed AV packet.
     /// </summary>
-    public class AVPacket : IDisposable
+    class AVPacket : IDisposable, IPacket
     {
         internal AVPacket()
         {

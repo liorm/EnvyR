@@ -72,6 +72,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnvyR.Common\EnvyR.Common.csproj">
+      <Project>{466187ec-8c51-42be-873b-48e736597395}</Project>
+      <Name>EnvyR.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EnvyR.FFmpeg\EnvyR.FFmpeg.csproj">
       <Project>{9c2b605e-5f51-4337-813e-f51ef24ea595}</Project>
       <Name>EnvyR.FFmpeg</Name>

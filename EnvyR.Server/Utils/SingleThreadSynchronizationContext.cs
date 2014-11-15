@@ -29,7 +29,6 @@ namespace EnvyR.Server.Utils
             m_queue.Add(new KeyValuePair<SendOrPostCallback, object>(d, state));
         }
 
-        /// <summary>Not supported.</summary>
         public override void Send(SendOrPostCallback d, object state)
         {
             if (m_thread == Thread.CurrentThread)

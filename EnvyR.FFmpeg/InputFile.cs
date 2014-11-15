@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EnvyR.Common.Interfaces;
 using EnvyR.FFmpeg.Exceptions;
 using EnvyR.FFmpeg.Managed;
 using EnvyR.FFmpeg.Stream;
@@ -16,17 +17,9 @@ namespace EnvyR.FFmpeg
     /// <summary>
     /// Represents an ffmpeg input stream.
     /// </summary>
-    public class InputFile : IDisposable
+    /// TODO: MOVE TO FFmpegInputAdapter
+    class InputFile : IDisposable
     {
-        static InputFile()
-        {
-            // Register the codecs.
-            FFmpegInvoke.av_register_all();
-            FFmpegInvoke.avcodec_register_all();
-#if DEBUG
-            FFmpegInvoke.av_log_set_level(1000);
-#endif
-        }
 
         /// <summary>
         /// Construct the stream for the given url.
@@ -87,6 +80,18 @@ namespace EnvyR.FFmpeg
                         default:
                             m_streams.Add(i, null);
                             break;
+                    }
+                }
+
+                if (ctx->metadata != null)
+                {
+                    AVDictionaryEntry* entry = null;
+                    while ((entry = FFmpegInvoke.av_dict_get(ctx->metadata, "", entry, FFmpegInvoke.AV_DICT_IGNORE_SUFFIX)) != null)
+                    {
+                        string key = new string((sbyte*)entry->key);
+                        string value = new string((sbyte*)entry->value);
+
+                        Console.WriteLine("Metadata: {0} == {1}", key, value);
                     }
                 }
 
