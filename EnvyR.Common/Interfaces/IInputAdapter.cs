@@ -27,7 +27,8 @@ namespace EnvyR.Common.Interfaces
         /// <summary>
         /// Start packets pumping.
         /// </summary>
-        void StartPlaying();
+        /// <param name="processingScheduler">Received packets should be Observed On this scheduler</param>
+        void StartPlaying(IScheduler processingScheduler);
 
         /// <summary>
         /// Stop packets pumping.

@@ -8,7 +8,6 @@ using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using EnvyR.FFmpeg;
-using EnvyR.FFmpeg.Managed;
 using EnvyR.Server.Engine.Interfaces;
 using EnvyR.Server.Services;
 using Splat;
@@ -47,13 +46,12 @@ namespace EnvyR.Server.Engine.Access
             await b.ConnectAsyncTask();
 
             b.Streams[0].PacketsStream.
-                ObserveOn(SynchronizationContext.Current).
                 Subscribe(( p ) =>
                           {
                               this.Log().Debug("Packet: {0}", p.Timestamp);
                           });
 
-            b.StartPlaying();
+            b.StartPlaying(new SynchronizationContextScheduler(SynchronizationContext.Current));
         }
     }
 }

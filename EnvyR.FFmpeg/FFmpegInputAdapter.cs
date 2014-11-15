@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using EnvyR.Common;
 using EnvyR.Common.Interfaces;
 using EnvyR.FFmpeg.Exceptions;
-using EnvyR.FFmpeg.Stream;
 using FFmpeg.AutoGen;
 using Splat;
 
@@ -139,18 +140,91 @@ namespace EnvyR.FFmpeg
 
         public bool IsConnected
         {
-            get { return m_ctx != null; }
+            get { return m_ctx != IntPtr.Zero; }
         }
 
-        public void StartPlaying()
+        #region Play loop
+
+        private Thread m_readerThread;
+        private bool m_stopRunning = false;
+
+        public void StartPlaying(IScheduler processingScheduler)
         {
-            throw new NotImplementedException();
+            if (m_ctx == IntPtr.Zero || m_streams.Count == 0)
+                throw new InvalidOperationException("File not open");
+
+            if (m_readerThread != null)
+                throw new InvalidOperationException("Already playing");
+
+            m_readerThread = new Thread(ReaderThreadProc)
+                            {
+                                IsBackground = true,
+                                Name = "FFmpegInputAdapter Reader"
+                            };
+
+            m_stopRunning = false;
+            m_readerThread.Start(processingScheduler);
         }
 
         public void StopPlaying()
         {
-            throw new NotImplementedException();
+            if (m_readerThread != null)
+            {
+                m_stopRunning = true;
+                m_readerThread.Join();
+                m_readerThread = null;
+            }
         }
+
+        private void ReaderThreadProc(object arg)
+        {
+            IScheduler processingScheduler = (IScheduler)arg;
+
+            while (!m_stopRunning)
+            {
+                if (!ReadPacket(processingScheduler))
+                    break;
+            }
+
+            processingScheduler.Schedule(() =>
+            {
+                // Mark streams as finished.
+                foreach (var stream in m_streams)
+                    stream.MarkCompletion();
+            });
+        }
+
+        /// <summary>
+        /// Read a single packet and forward it to the streams.
+        /// </summary>
+        bool ReadPacket(IScheduler processingScheduler)
+        {
+            unsafe
+            {
+                var packet = new FFmpegPacket();
+
+                fixed (AVPacket* p = &packet.Pkt)
+                {
+                    FFmpegInvoke.av_init_packet(p);
+                    if (FFmpegInvoke.av_read_frame((AVFormatContext*)m_ctx.ToPointer(), p) < 0)
+                        return false;
+                }
+
+                if (packet.Pkt.stream_index >= m_streams.Count)
+                {
+                    packet.Dispose();
+                    return false;
+                }
+
+                var dest = m_streams[packet.Pkt.stream_index];
+                packet.Initialize(dest);
+                processingScheduler.Schedule(() => dest.SendPacket(packet));
+
+                return true;
+            }
+        }
+
+        #endregion
 
         public IInputStream VideoStream { get; private set; }
         public IInputStream AudioStream { get; private set; }
