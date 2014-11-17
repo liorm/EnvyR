@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using EnvyR.Server.Services;
 using Splat;
@@ -65,6 +66,9 @@ namespace EnvyR.Server.Utils
 
         public void Write(string message, LogLevel logLevel)
         {
+#if DEBUG
+            Debug.WriteLine(message);
+#endif
             m_queue.Add(new Msg(message));
         }
 

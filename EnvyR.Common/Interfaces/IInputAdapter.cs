@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EnvyR.Common.Interfaces
@@ -17,7 +18,7 @@ namespace EnvyR.Common.Interfaces
         /// </summary>
         /// <remarks>Most functions will not work until adapter is connected</remarks>
         /// <returns>success or failure</returns>
-        Task<bool> ConnectAsyncTask();
+        Task<bool> ConnectAsyncTask(CancellationToken token);
 
         /// <summary>
         /// Return true if the adapter is connected.

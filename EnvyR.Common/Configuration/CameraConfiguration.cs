@@ -6,11 +6,15 @@ namespace EnvyR.Common.Configuration
     /// Holds configuration for a single camera.
     /// </summary>
     [Serializable]
-    public class CameraConfiguration
+    public struct CameraConfiguration
     {
-        public CameraConfiguration()
+        /// <summary>
+        /// Initialize a new configuration instance.
+        /// </summary>
+        public CameraConfiguration(string url) : this()
         {
-            
+            Id = Guid.NewGuid();
+            Url = url;
         }
 
         /// <summary>
@@ -21,6 +25,16 @@ namespace EnvyR.Common.Configuration
         /// <summary>
         /// The camera stream URL.
         /// </summary>
-        public string Url { get; private set; }
+        public string Url { get; set; }
+
+        /// <summary>
+        /// The camera display name.
+        /// </summary>
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} ({1})", Id, Name);
+        }
     }
 }

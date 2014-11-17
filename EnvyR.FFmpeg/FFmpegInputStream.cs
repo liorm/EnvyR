@@ -58,6 +58,9 @@ namespace EnvyR.FFmpeg
         /// <param name="packet"></param>
         public void SendPacket(FFmpegPacket packet)
         {
+            if (m_disposed)
+                return;
+
             m_subject.OnNext(packet);
         }
 
@@ -79,8 +82,11 @@ namespace EnvyR.FFmpeg
 
         private readonly AVRational m_timebase;
 
+        private bool m_disposed;
+
         public void Dispose()
         {
+            m_disposed = true;
             m_subject.Dispose();
         }
     }

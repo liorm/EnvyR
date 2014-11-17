@@ -9,6 +9,9 @@ using Splat;
 
 namespace EnvyR.Server.Utils
 {
+    /// <summary>
+    /// Base class for application that implement <see cref="SynchronizationContext"/>. Needed for proper async/await handling.
+    /// </summary>
     abstract class AsyncApplication
     {
         public AsyncApplication()

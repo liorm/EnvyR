@@ -43,7 +43,7 @@ namespace EnvyR.FFmpeg
         /// </summary>
         private IntPtr m_ctx = IntPtr.Zero;
 
-        public async Task<bool> ConnectAsyncTask()
+        public async Task<bool> ConnectAsyncTask(CancellationToken token)
         {
             if (m_ctx != IntPtr.Zero)
                 throw new InvalidOperationException("Already connected");
@@ -62,6 +62,8 @@ namespace EnvyR.FFmpeg
                             return IntPtr.Zero;
                         }
 
+                        token.ThrowIfCancellationRequested();
+
                         if (FFmpegInvoke.avformat_find_stream_info(ctx, null) != 0)
                         {
                             this.Log().Debug("Couldn't find stream info for file '{0}'", Uri);
@@ -78,7 +80,7 @@ namespace EnvyR.FFmpeg
 
                         return new IntPtr(ctx);
                     }
-                });
+                }, token);
 
             if (m_ctx == IntPtr.Zero)
                 return false;
